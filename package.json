@@ -1,0 +1,29 @@
+{
+  "name": "discord-bot",
+  "version": "1.0.0",
+  "description": "Netch LK Service Manager using Discord.js.",
+  "main": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon",
+    "start": "node ./dist/index.js",
+    "lint": "eslint \"./src/**/*.ts\" --ignore-pattern node_modules/ --config .eslintrc.json --fix --cache",
+    "postinstall": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
+    "eslint": "^8.47.0",
+    "nodemon": "^3.0.1",
+    "tsc-watch": "^6.0.4"
+  },
+  "dependencies": {
+    "@types/node": "^20.4.10",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.1.6"
+  }
+}
