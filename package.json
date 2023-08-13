@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@types/node": "^20.4.10",
+    "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",
+    "tseep": "^1.1.1",
     "typescript": "^5.1.6"
   }
 }
