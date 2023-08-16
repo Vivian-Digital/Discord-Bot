@@ -1,6 +1,6 @@
 {
   "name": "discord-bot",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Netch LK Service Manager using Discord.js.",
   "main": "./dist/index.js",
   "type": "module",
