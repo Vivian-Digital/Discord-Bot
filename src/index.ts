@@ -1,6 +1,6 @@
 import { Client, IntentsBitField } from 'discord.js';
-import { EventHandler } from './core/discord/eventhandler.js';
 import { ENV } from './config/config.js';
+import EventHandler from './core/handlers/eventHandler.js';
 
 /* Bot Instance */
 const ClientInstance = new Client({
@@ -15,5 +15,5 @@ const ClientInstance = new Client({
 /* Login to Discord Instance */
 await ClientInstance.login(ENV.DISCORD_TOKEN)
 
-/* Handle Events */
+/* Custom Events Handler */
 EventHandler(ClientInstance)
