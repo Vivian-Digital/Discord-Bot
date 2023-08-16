@@ -1,8 +1,11 @@
 import { TlocalCommand } from 'Instance-Types';
 import { Client, CommandInteraction } from 'discord.js';
+import { FileDirName } from '../../utils/filedirname.js';
+
+const { __exactname } = FileDirName(import.meta)
 
 const Function: TlocalCommand = {
-    name: 'ping',
+    name: __exactname,
     description: 'Pong!',
     devOnly: true,
     authorized: false,
