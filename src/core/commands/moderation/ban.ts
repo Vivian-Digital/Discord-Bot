@@ -1,8 +1,11 @@
 import { TlocalCommand } from 'Instance-Types';
 import { Client, CommandInteraction, ApplicationCommandOptionType, PermissionFlagsBits } from 'discord.js';
+import { FileDirName } from '../../utils/filedirname.js';
+
+const { __exactname } = FileDirName(import.meta)
 
 const Function: TlocalCommand = {
-    name: 'ban',
+    name: __exactname,
     description: 'Ban a member from the server',
     deleted: false,
     authorized: true,
