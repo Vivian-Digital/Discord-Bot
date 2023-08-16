@@ -7,14 +7,16 @@ import getLocalCommands from '../../utils/getLocalCommands.js'
 /* Slash Commands Handler */
 export default async (Instance: Client<true>) => {
     try {
-        const localCommands = await getLocalCommands()
-        const applicationCommands = await getApplicationCommands(Instance, ENV.GUILD_ID)
+        const [ localCommands, applicationCommands ] = await Promise.all([
+            getLocalCommands(),
+            getApplicationCommands(Instance, ENV.GUILD_ID)
+        ])
         
         for (const localCommand of localCommands) {
             const { name, description, options } = localCommand
 
             if (localCommand.deleted) {
-                DevelopmentLog(`Skipping command ${ name } as it's set to be Delted!`)
+                DevelopmentLog(`Skipping command ${ name } as it's set to be Delted!`, true)
                 continue
             } else {
                 await applicationCommands.create({
@@ -22,7 +24,11 @@ export default async (Instance: Client<true>) => {
                     description: description,
                     options: options
                 })
-                DevelopmentLog(`Registering command ${ name }`)
+                DevelopmentLog(`Registering Command ( ${ name } )`, true)
+                /* Use Below Function if there are commands that need to be deleted */
+                /* for (const id of CONFIG.deleteQueue) {
+                    await applicationCommands.delete(id)
+                } */
             }
         }
     } catch (error) {
