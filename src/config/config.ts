@@ -27,5 +27,14 @@ export const CONFIG = {
         "784060192836681749"
     ],
     /* Ticket Channel ID */
-    TICKET_CHANNEL_ID: "1061538251342626880"
+    TICKET_CHANNEL_ID: "1141592276284477450"
+}
+
+export const EMBED_DATA = {
+    ICONS: {
+        GREEN_SHIELD: 'https://i.ibb.co/M55Fj3D/icons8-verified-account.gif',
+    },
+    THUMBNAILS: {
+        NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png'
+    }
 }
