@@ -12,7 +12,7 @@ export const ENV = {
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     /* Discord Server */
     GUILD_ID: process.env.GUILD_ID,
-}
+} as const
 
 /* Discord bot Runtime Config */
 export const CONFIG = {
@@ -25,10 +25,18 @@ export const CONFIG = {
     /* Authorized Accounts */
     authorizedAccounts: [
         "784060192836681749"
-    ],
-    /* Ticket Channel ID */
-    TICKET_CHANNEL_ID: "1141592276284477450"
+    ]
 }
+
+/* Ticket Interaction Configurations */
+export const TICKET = {
+    /* Ticket Manger */
+    MANGER: "784060192836681749",
+    /* Ticket Channel ID */
+    CHANNEL_ID: "1141592276284477450",
+    /* Ticket Category */
+    CATEGORY_ID: "1141671074589855844"
+} as const
 
 export const EMBED_DATA = {
     ICONS: {
@@ -37,4 +45,4 @@ export const EMBED_DATA = {
     THUMBNAILS: {
         NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png'
     }
-}
+} as const
