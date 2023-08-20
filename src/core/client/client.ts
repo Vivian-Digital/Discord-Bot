@@ -1,7 +1,7 @@
 import { Client, IntentsBitField } from 'discord.js';
 import EventHandler from '../handlers/eventHandler.js';
-import { AppEvents } from '../services/emitter.js';
 import { ENV } from '../../config/config.js';
+import { AppEvents } from '../services/emitter.js';
 
 /* Bot Instance */
 export const ClientInstance = new Client({
@@ -13,11 +13,11 @@ export const ClientInstance = new Client({
     ]
 })
 
-/* Start Discord bot when Application is ready */
-AppEvents.on('onReady', async () => {
+AppEvents.on('onDBReady', async () => {
+    /* Start Discord bot when Application is ready */
     await ClientInstance.login(ENV.DISCORD_TOKEN)
-    /* Emit start signal to bot controller */
-    AppEvents.emit('Ready')
     /* Custom Events Handler */
     EventHandler(ClientInstance)
+    /* Initialize Express Web Server */
+    AppEvents.emit('Ready')
 })

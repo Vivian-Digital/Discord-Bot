@@ -8,6 +8,7 @@ declare global {
             PORT: number,
             DISCORD_TOKEN: string,
             GUILD_ID: string,
+            CONNECTION_URI: string,
             npm_package_version: string,
         }
     }
