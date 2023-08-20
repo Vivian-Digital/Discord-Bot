@@ -1,5 +1,5 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, EmbedBuilder } from 'discord.js';
-import { CONFIG, EMBED_DATA } from '../../../config/config.js';
+import { EMBED_DATA, TICKET } from '../../../config/config.js';
 import { DevelopmentLog } from '../../utils/dev.js';
 
 export const TicketButtons = [
@@ -17,7 +17,7 @@ export const TicketButtons = [
 
 /* Ticket Handler */
 export default async (Instance: Client<true>) => {
-    const TicketChannel = await Instance.channels.fetch(CONFIG.TICKET_CHANNEL_ID)
+    const TicketChannel = await Instance.channels.fetch(TICKET.CHANNEL_ID)
     if (!TicketChannel) {
         DevelopmentLog(`Ticket Channel Does not exists!`, true)
         return

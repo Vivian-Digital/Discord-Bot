@@ -3,7 +3,7 @@ import getLocalCommands from '../../utils/getLocalCommands.js';
 import { CONFIG } from '../../../config/config.js';
 
 /* Default Slash Command Handler */
-export default async (Instance: Client, interaction: CommandInteraction) => {
+export default async (Instance: Client<true>, interaction: CommandInteraction) => {
     /* get local commands */
     const localCommands = await getLocalCommands()
 
