@@ -12,6 +12,8 @@ export const ENV = {
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     /* Discord Server */
     GUILD_ID: process.env.GUILD_ID,
+    /* Mongodb Connection URI */
+    CONNECTION_URI: process.env.CONNECTION_URI
 } as const
 
 /* Discord bot Runtime Config */
@@ -30,7 +32,9 @@ export const CONFIG = {
 
 /* Ticket Interaction Configurations */
 export const TICKET = {
-    /* Ticket Manger */
+    /* Ticket Staff Role ID */
+    STAFF_ROLE: "1061544410820640788",
+    /* Ticket Manger (This user will be added to every Ticket Channel) */
     MANGER: "784060192836681749",
     /* Ticket Channel ID */
     CHANNEL_ID: "1141592276284477450",
