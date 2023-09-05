@@ -4,5 +4,6 @@ import { EventEmitter } from 'tseep';
 export const AppEvents = new EventEmitter<{
     onReady: () => Promise<void>,
     onDBReady: () => Promise<void>,
+    onSession: () => void,
     Ready: () => void
 }>()
