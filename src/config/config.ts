@@ -8,6 +8,9 @@ export const ENV = {
     NODE_ENV: process.env.NODE_ENV,
     /* NPM Package Version */
     NPM_PACKAGE_VERSION: process.env.npm_package_version,
+    /* Panel Credentials */
+    USERNAME: process.env.PANEL_USERNAME,
+    PASSWORD: process.env.PANEL_PASSWORD,
     /* Discord Bot Token */
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     /* Discord Server */
@@ -47,6 +50,7 @@ export const EMBED_DATA = {
         GREEN_SHIELD: 'https://i.ibb.co/M55Fj3D/icons8-verified-account.gif',
     },
     THUMBNAILS: {
-        NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png'
+        NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png',
+        BLUE_HOST_SERVER: 'https://img.icons8.com/fluency/96/server.png'
     }
 } as const
