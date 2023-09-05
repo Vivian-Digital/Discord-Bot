@@ -7,6 +7,7 @@ const app: Application = express()
 
 /* Registering Events */
 import './core/services/connection.js'
+import './core/services/SessionToken.js'
 
 import Routes from './routes/base-routes.js'
 import { ExpressResponse } from './core/utils/response.js'
