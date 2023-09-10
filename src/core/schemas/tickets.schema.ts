@@ -6,6 +6,10 @@ const TicketsSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    trialStatus: {
+        type: Boolean,
+        default: false
+    },
     ticketOwnerUsername: {
         type: String,
         required: true
@@ -13,6 +17,24 @@ const TicketsSchema = new mongoose.Schema({
     dynamicChannel: {
         type: String,
         required: true
+    },
+    config: {
+        inboundID: {
+            type: Number,
+        },
+        email: {
+            type: mongoose.Schema.Types.Mixed,
+            default: false
+        },
+        expire: {
+            type: Date,
+        },
+        export: {
+            type: String
+        },
+        vps_id: {
+            type: Number
+        }
     },
     createdAt: {
         type: Date,
