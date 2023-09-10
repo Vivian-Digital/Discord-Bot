@@ -8,15 +8,34 @@ export const ENV = {
     NODE_ENV: process.env.NODE_ENV,
     /* NPM Package Version */
     NPM_PACKAGE_VERSION: process.env.npm_package_version,
-    /* Panel Credentials */
-    USERNAME: process.env.PANEL_USERNAME,
-    PASSWORD: process.env.PANEL_PASSWORD,
     /* Discord Bot Token */
     DISCORD_TOKEN: process.env.DISCORD_TOKEN,
     /* Discord Server */
     GUILD_ID: process.env.GUILD_ID,
     /* Mongodb Connection URI */
-    CONNECTION_URI: process.env.CONNECTION_URI
+    CONNECTION_URI: process.env.CONNECTION_URI,
+    CREDENTIALS: {
+        VPS_1: {
+            API: process.env.VPS1_API,
+            USERNAME: process.env.VPS1_USERNAME,
+            PASSWORD: process.env.VPS1_PASSWORD
+        },
+        VPS_2: {
+            API: process.env.VPS2_API,
+            USERNAME: process.env.VPS2_USERNAME,
+            PASSWORD: process.env.VPS2_PASSWORD
+        },
+        VPS_3: {
+            API: process.env.VPS3_API,
+            USERNAME: process.env.VPS3_USERNAME,
+            PASSWORD: process.env.VPS3_PASSWORD
+        },
+        ZOOM_VPS: {
+            API: process.env.ZOOM_VPS_API,
+            USERNAME: process.env.ZOOM_VPS_USERNAME,
+            PASSWORD: process.env.ZOOM_VPS_PASSWORD
+        },
+    }
 } as const
 
 /* Discord bot Runtime Config */
