@@ -1,40 +1,62 @@
-import got from 'got';
-import { API, ENV } from '../../config/config.js';
+import got, { Response } from 'got';
 import { DevelopmentLog } from '../utils/dev.js';
 import { AppEvents } from './emitter.js';
+import { SERVER_CONFIG } from '../../config/settings.js';
 
 /* Panel Access Token */
 export const SessionToken: {
-    'session': string,
-    'expires': number
+    'session': Record<number, string>,
+    'expires': Record<number, number>
 } = {
-    'session': '',
-    'expires': 0
+    'session': {
+        1: '',
+        2: '',
+        3: '',
+        4: ''
+    },
+    'expires': {
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0
+    }
 }
 
 export class SessionTokenManager {
     public static newSessionToken = async () => {
-        try {
-            const { headers } = await got.post(`${ API }/login`, {
+        const keys = Object.keys(SERVER_CONFIG)
+        const Promises: Array<Promise<Response>> = []
+
+        for (const key of keys) {
+            const { api, credentials: { username, password } } = SERVER_CONFIG[parseInt(key)]
+            Promises.push(got.post(`${ api }/login`, {
                 form: {
-                    'username': ENV.USERNAME,
-                    'password': ENV.PASSWORD
+                    'username': username,
+                    'password': password
                 }
-            });
-    
-            const match = /session=(?<session>[^;]+);.+?Expires=(?<expires>[^;]+)/i.exec((headers['set-cookie'] as Array<string>)[0])
-            if (match && match.groups) {
-                SessionToken['session'] = match.groups['session']
-                SessionToken['expires'] = new Date(match.groups['expires']).getTime()
-                DevelopmentLog('Session Token Updated', true)
+            }))
+        }
+
+        let key = 1
+
+        try {
+            const Responses = await Promise.all(Promises)
+            for (const { headers } of Responses) {
+                const match = /session=(?<session>[^;]+);.+?Expires=(?<expires>[^;]+)/i.exec((headers['set-cookie'] as Array<string>)[0])
+                if (match && match.groups) {
+                    SessionToken['session'][key] = match.groups['session']
+                    SessionToken['expires'][key] = new Date(match.groups['expires']).getTime()
+                    DevelopmentLog(`Session Token Updated [VPS-${ key }]`, true)
+                    key ++
+                }
             }
         } catch (error) {
-            DevelopmentLog('Panel Credentials Unknown', true)   
+            DevelopmentLog(`Panel Credentials Unknown [VPS-${ key }]`, true)   
         }
     }
 
-    public static isSessionExpired = () => {
-        return Date.now() > SessionToken.expires
+    public static isSessionExpired = (key: number) => {
+        return Date.now() > SessionToken.expires[key]
     }
 }
 
