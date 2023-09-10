@@ -11,6 +11,8 @@ mongoose.connection.on('connected', () => {
     DevelopmentLog('Mongodb Connected', true)
     /* Emit start signal to bot controller */
     AppEvents.emit('onDBReady')
+    /* Get Session Token From Panel API */
+    AppEvents.emit('onSession')
 })
 
 export default mongoose

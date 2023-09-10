@@ -13,7 +13,29 @@ export const ENV = {
     /* Discord Server */
     GUILD_ID: process.env.GUILD_ID,
     /* Mongodb Connection URI */
-    CONNECTION_URI: process.env.CONNECTION_URI
+    CONNECTION_URI: process.env.CONNECTION_URI,
+    CREDENTIALS: {
+        VPS_1: {
+            API: process.env.VPS1_API,
+            USERNAME: process.env.VPS1_USERNAME,
+            PASSWORD: process.env.VPS1_PASSWORD
+        },
+        VPS_2: {
+            API: process.env.VPS2_API,
+            USERNAME: process.env.VPS2_USERNAME,
+            PASSWORD: process.env.VPS2_PASSWORD
+        },
+        VPS_3: {
+            API: process.env.VPS3_API,
+            USERNAME: process.env.VPS3_USERNAME,
+            PASSWORD: process.env.VPS3_PASSWORD
+        },
+        ZOOM_VPS: {
+            API: process.env.ZOOM_VPS_API,
+            USERNAME: process.env.ZOOM_VPS_USERNAME,
+            PASSWORD: process.env.ZOOM_VPS_PASSWORD
+        },
+    }
 } as const
 
 /* Discord bot Runtime Config */
@@ -47,6 +69,7 @@ export const EMBED_DATA = {
         GREEN_SHIELD: 'https://i.ibb.co/M55Fj3D/icons8-verified-account.gif',
     },
     THUMBNAILS: {
-        NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png'
+        NEON_BOOKMARK: 'https://img.icons8.com/external-xnimrodx-lineal-gradient-xnimrodx/64/external-bookmark-seo-xnimrodx-lineal-gradient-xnimrodx.png',
+        BLUE_HOST_SERVER: 'https://img.icons8.com/fluency/96/server.png'
     }
 } as const
