@@ -6,6 +6,7 @@ import { DevelopmentLog } from '../../utils/dev.js';
 import { InboundStatus } from '../../api/handler.js';
 import { AutomaticTicketButtons, InboundInfoButtons, InteractionActionBarBuilder, InteractionEmbedBuilder, StatusEmbedBuilder } from '../../utils/builders.js';
 import { ServicePackSelectMenu } from '../selectManuHandler/menu.js';
+import { ActiveChannels } from '../../controllers/channels.js';
 
 type TicketCusomID = typeof AutomaticTicketButtons[number]['id']
 type TCustomID = typeof TicketButtons[number]['id']
@@ -40,6 +41,10 @@ const NewDynamicChannel = async (server: Guild, Instance: Client<true>, user: Us
         topic: `${ user.tag }'s Ticket`,
         reason: `Automatic Ticket Creation via ${ Instance.user.tag }`
     })
+
+    /* Push Channel id to Active Channels Array */
+    ActiveChannels.push(channel.id)
+
     return channel
 }
 
