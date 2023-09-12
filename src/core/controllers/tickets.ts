@@ -10,6 +10,22 @@ export const isTrialExpired = async (user: User) => {
     return false
 }
 
+export const FetchActiveChannels = async () => {
+    return await Tickets.aggregate<{
+        ticketOwnerid: string,
+        dynamicChannel: string
+    }>([
+        {
+            '$project': {
+                trialStatus: 0,
+                ticketOwnerUsername: 0,
+                config: 0,
+                createdAt: 0
+            }
+        }
+    ])
+}
+
 export const FetchTicket = async (user: User) => {
     const result = await Tickets.findOne({ ticketOwnerid: user.id })
     if (result) {
