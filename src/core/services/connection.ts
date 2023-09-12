@@ -13,6 +13,8 @@ mongoose.connection.on('connected', () => {
     AppEvents.emit('onDBReady')
     /* Get Session Token From Panel API */
     AppEvents.emit('onSession')
+    /* Fetch Active Channels */
+    AppEvents.emit('fetchActiveChannels')
 })
 
 export default mongoose
