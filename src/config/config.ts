@@ -73,3 +73,5 @@ export const EMBED_DATA = {
         BLUE_HOST_SERVER: 'https://img.icons8.com/fluency/96/server.png'
     }
 } as const
+
+export const BANK_STRING = '```P.P.K Samantha\nPeoples Bank - Hungama\n1234 1234 1234 1234\nLKR 3500/=```'
