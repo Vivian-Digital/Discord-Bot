@@ -26,7 +26,7 @@ export const SelectMenuCollector = async (interaction: StringSelectMenuInteracti
                 await Promise.all([
                     interaction.reply({
                         embeds: [
-                            InteractionEmbedBuilder('Gold', `Trial Created Successfully.\nExpires in \`${ new Date(config.expire).toUTCString() }\`\n\n${ spoiler(`\`${ config.export }\``) }`)
+                            InteractionEmbedBuilder('Gold', `Trial Created Successfully.\nExpires in \`${ new Date(config.expire).toUTCString() }\`\n\n${ spoiler(`\`\`\`${ config.export }\`\`\``) }`)
                         ],
                         components: [
                             TicketActionBarBuilder()
