@@ -1,4 +1,4 @@
-import { Client, IntentsBitField } from 'discord.js';
+import { Client, IntentsBitField, Partials, GatewayIntentBits } from 'discord.js';
 import EventHandler from '../handlers/eventHandler.js';
 import { ENV } from '../../config/config.js';
 import { AppEvents } from '../services/emitter.js';
@@ -9,8 +9,12 @@ export const ClientInstance = new Client({
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMembers,
         IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent
-    ]
+        IntentsBitField.Flags.MessageContent,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions
+    ],
+    partials: [ Partials.Message, Partials.Channel, Partials.Reaction ],
 })
 
 AppEvents.on('onDBReady', async () => {
