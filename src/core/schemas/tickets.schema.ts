@@ -22,6 +22,20 @@ const TicketsSchema = new mongoose.Schema({
         inboundID: {
             type: Number,
         },
+        port: {
+            type: Number,
+        },
+        pacK_id: {
+            type: String,
+        },
+        subId: {
+            type: mongoose.Schema.Types.Mixed,
+            default: false
+        },
+        uuid: {
+            type: mongoose.Schema.Types.Mixed,
+            default: false
+        },
         email: {
             type: mongoose.Schema.Types.Mixed,
             default: false
