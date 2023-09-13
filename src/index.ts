@@ -6,6 +6,7 @@ import cors from 'cors'
 const app: Application = express()
 
 /* Registering Events */
+import './core/controllers/channels.js'
 import './core/services/connection.js'
 import './core/services/SessionToken.js'
 
