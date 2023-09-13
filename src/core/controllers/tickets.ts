@@ -50,7 +50,6 @@ export const UpdateTicket = async (user: User, config: {
                 update: {
                     $set: {
                         ticketOwnerUsername: user.username,
-                        email: config.email,
                         config: config,
                         /* Trial Used */
                         trialStatus: true
@@ -73,21 +72,25 @@ export const isNewTicketUser = async (user: User) => {
 }
 
 export const NewTicket = async (user: User, channelid: string) => {
-    await Tickets.bulkWrite([
-        {
-            updateOne: {
-                filter: {
-                    ticketOwnerid: user.id,
-                },
-                update: {
-                    $set: {
-                        ticketOwnerUsername: user.username,
-                        dynamicChannel: channelid,
-                        createdAt: new Date()
-                    }
-                },
-                upsert: true
+    await Promise.all([
+        Tickets.bulkWrite([
+            {
+                updateOne: {
+                    filter: {
+                        ticketOwnerid: user.id,
+                    },
+                    update: {
+                        $set: {
+                            ticketOwnerUsername: user.username,
+                            dynamicChannel: channelid,
+                            createdAt: new Date()
+                        }
+                    },
+                    upsert: true
+                }
             }
-        }
+        ]),
+        /* Create Blank Package under the same user */
+        NewPackageUser(user)
     ])
 }
