@@ -5,7 +5,9 @@ import { SessionToken, SessionTokenManager } from '../services/SessionToken.js';
 import { TListResponse, TListResponseSetting, TResponse } from 'panel/API';
 import { DevelopmentLog } from '../utils/dev.js';
 import { CompareUnixTime, FutureTimeStamp, GenerateInboundFillData, ParseInboundResponse } from './api-functions.js';
-import { CERTIFICATES, SERVER_CONFIG } from '../../config/settings.js';
+import { CERTIFICATES, PACK_CONFIG, SERVER_CONFIG } from '../../config/settings.js';
+import { GetPackageDetails, SetAvailablePackages } from '../controllers/package-manager.js';
+import { pack_types } from '../handlers/selectManuHandler/menu.js';
 
 const RefreshSession = async (key: number) => {
     /* Check if the Session token is Expired */
@@ -144,6 +146,9 @@ const newClient = async (
     if (response.success) {
         return {
             ID: 1,
+            port: 443,
+            subId: subId,
+            uuid: uuid,
             email: email,
             expire: isTrial ? FutureTimeStamp(1) : FutureTimeStamp(30),
             export: `vless://${ uuid }@${ domain() }:443?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2&sni=zoom.us#Dzoom-${ email }`
@@ -223,12 +228,12 @@ const newInbound = async (
     return false
 }
 
-export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vmess', sni: string, stream_method: 'ws' | 'tls') => {
+export const NewSubscription = async (user: User, vps_id: number, method: 'vless' | 'vmess', sni: string, stream_method: 'ws' | 'tls', isPaid: boolean) => {
     /* Check if the Session token is Expired */
     await RefreshSession(vps_id)
 
     const [ trialStatus, { ports, uuids, emails, subids }] = await Promise.all([
-        isTrialExpired(user),
+        isTrialExpired(user, isPaid),
         FetchInbounds(vps_id)
     ])
 
@@ -236,7 +241,7 @@ export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vm
         const { port, uuid, email, subId } = GenerateInboundFillData(ports, emails, uuids, subids)
         
         if (vps_id === 1 && method === 'vless') {
-            return await newClient(true, uuid, `${ user.username }_${ email }`, subId, vps_id)
+            return await newClient(!isPaid, uuid, `${ user.username }_${ email }`, subId, vps_id)
         }
 
         return await newInbound({
@@ -245,7 +250,7 @@ export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vm
             method: method,
             sni: sni,
             stream_method: stream_method
-        }, true, port, uuid, email, subId)
+        }, !isPaid, port, uuid, email, subId)
     }
 
     return false
