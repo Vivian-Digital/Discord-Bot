@@ -74,6 +74,9 @@ export const ParseInboundResponse = (response: TResponse, vps_id: number) => {
             const { streamSettings: { tlsSettings: { alpn }, security } } = response.obj
             return {
                 ID: id,
+                port: port,
+                subId: false,
+                uuid: false,
                 email: false,
                 expire: expiryTime,
                 export: `${ protocol }://${ clients[0].id }@${ domain() }:${ port }?type=${ network }&security=${ security }&fp=&alpn=${ encodeURIComponent(alpn.join()) }#${ `${ remark }-${ clients[0].email }` }`
@@ -94,6 +97,9 @@ export const ParseInboundResponse = (response: TResponse, vps_id: number) => {
 
             return {
                 ID: id,
+                port: port,
+                subId: false,
+                uuid: false,
                 email: false,
                 expire: expiryTime,
                 export: `${ protocol }://${ btoa(JSON.stringify(export_object)) }`
