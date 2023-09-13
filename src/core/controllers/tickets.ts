@@ -1,8 +1,10 @@
 import { User } from 'discord.js'
 import { Tickets } from '../schemas/tickets.schema.js'
+import { NewPackageUser } from './package-manager.js'
 
 /* Get users trial status */
-export const isTrialExpired = async (user: User) => {
+export const isTrialExpired = async (user: User, isPaid: boolean) => {
+    if (isPaid) { return false }
     const result = await Tickets.findOne({ ticketOwnerid: user.id })
     if (result) {
         return result.trialStatus
@@ -38,6 +40,10 @@ export const UpdateTicket = async (user: User, config: {
     inboundID: number,
     expire: Date,
     export: string,
+    port: number,
+    pacK_id: string,
+    subId: string | boolean,
+    uuid: string | boolean,
     email: string | boolean,
     vps_id: number
 }) => {
