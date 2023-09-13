@@ -1,11 +1,13 @@
 import { ButtonInteraction, ChannelType, Client, EmbedBuilder, Guild, TextChannel, User, spoiler } from 'discord.js';
 import { TicketButtons } from '../../events/ready/[03]-ticketInteractions.js';
-import { EMBED_DATA, ENV, TICKET } from '../../../config/config.js';
+import { BANK_STRING, EMBED_DATA, ENV, TICKET } from '../../../config/config.js';
 import { NewTicket, isNewTicketUser, isTrialExpired } from '../../controllers/tickets.js';
 import { DevelopmentLog } from '../../utils/dev.js';
 import { InboundStatus } from '../../api/handler.js';
 import { AutomaticTicketButtons, InboundInfoButtons, InteractionActionBarBuilder, InteractionEmbedBuilder, StatusEmbedBuilder } from '../../utils/builders.js';
 import { ServicePackSelectMenu } from '../selectManuHandler/menu.js';
+import { ActiveChannels } from '../../controllers/channels.js';
+import { SetUserPackageWaitingStatus } from '../../controllers/package-manager.js';
 
 type TicketCusomID = typeof AutomaticTicketButtons[number]['id']
 type TCustomID = typeof TicketButtons[number]['id']
@@ -40,6 +42,10 @@ const NewDynamicChannel = async (server: Guild, Instance: Client<true>, user: Us
         topic: `${ user.tag }'s Ticket`,
         reason: `Automatic Ticket Creation via ${ Instance.user.tag }`
     })
+
+    /* Push Channel id to Active Channels Array */
+    ActiveChannels.push(channel.id)
+
     return channel
 }
 
@@ -66,7 +72,15 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
                 })
             }
             case 'upgrade_account': {
-                return
+                return await Promise.all([
+                    interaction.reply({
+                        embeds: [
+                            InteractionEmbedBuilder('Green', BANK_STRING),
+                            InteractionEmbedBuilder('Green', 'After uploading your bank reciept. `Plese be kind to add `:bell:` (Bell) reaction to the reciept.`')
+                        ]
+                    }),
+                    SetUserPackageWaitingStatus(interaction.user, 'upgrade')
+                ])
             }
         }
     }
@@ -76,7 +90,7 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
         switch (interaction.customId as TicketCusomID) {
             /* Self Serfvice Options (Trial) */
             case 'ticket_trial': {
-                const trial_status = await isTrialExpired(interaction.user)
+                const trial_status = await isTrialExpired(interaction.user, false)
 
                 if (!trial_status) {
                     return await interaction.reply({
@@ -106,11 +120,15 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
             }
             /* Self Serfvice Options (Trial) */
             case 'ticket_buy': {
-                return await interaction.reply({
-                    embeds: [
-                        InteractionEmbedBuilder('Green', 'Thanks for Buying our serivice')
-                    ]
-                })
+                return await Promise.all([
+                    interaction.reply({
+                        embeds: [
+                            InteractionEmbedBuilder('Green', BANK_STRING),
+                            InteractionEmbedBuilder('Green', 'After uploading your bank reciept. `Plese be kind to add `:bell:` (Bell) reaction to the reciept.`')
+                        ]
+                    }),
+                    SetUserPackageWaitingStatus(interaction.user, 'buy_new')
+                ])
             }
         }
     }
@@ -156,10 +174,6 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
         DynamicChannel.permissionOverwrites.create(Guild.roles.everyone, {
             ViewChannel: false
         }),
-        /* Add Service Manger to this Channel */
-        DynamicChannel.permissionOverwrites.create(TICKET.MANGER, {
-            ViewChannel: true
-        }),
         /* Ticket Creators Permissions */
         DynamicChannel.permissionOverwrites.create(interaction.user.id, {
             /* Allowed */
@@ -168,8 +182,6 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
             ReadMessageHistory: true,
             UseApplicationCommands: true,
             /* Not Allowed */
-            AttachFiles: false,
-            SendMessages: false,
             CreatePublicThreads: false,
             CreatePrivateThreads: false,
             CreateInstantInvite: false,

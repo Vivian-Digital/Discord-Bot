@@ -56,8 +56,6 @@ export const CONFIG = {
 export const TICKET = {
     /* Ticket Staff Role ID */
     STAFF_ROLE: "1061544410820640788",
-    /* Ticket Manger (This user will be added to every Ticket Channel) */
-    MANGER: "784060192836681749",
     /* Ticket Channel ID */
     CHANNEL_ID: "1141592276284477450",
     /* Ticket Category */
@@ -73,3 +71,5 @@ export const EMBED_DATA = {
         BLUE_HOST_SERVER: 'https://img.icons8.com/fluency/96/server.png'
     }
 } as const
+
+export const BANK_STRING = '```P.P.K Samantha\nPeoples Bank - Hungama\n1234 1234 1234 1234\nLKR 3500/=```'

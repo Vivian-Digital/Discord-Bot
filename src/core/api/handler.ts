@@ -5,7 +5,9 @@ import { SessionToken, SessionTokenManager } from '../services/SessionToken.js';
 import { TListResponse, TListResponseSetting, TResponse } from 'panel/API';
 import { DevelopmentLog } from '../utils/dev.js';
 import { CompareUnixTime, FutureTimeStamp, GenerateInboundFillData, ParseInboundResponse } from './api-functions.js';
-import { CERTIFICATES, SERVER_CONFIG } from '../../config/settings.js';
+import { CERTIFICATES, PACK_CONFIG, SERVER_CONFIG } from '../../config/settings.js';
+import { GetPackageDetails, SetAvailablePackages } from '../controllers/package-manager.js';
+import { pack_types } from '../handlers/selectManuHandler/menu.js';
 
 const RefreshSession = async (key: number) => {
     /* Check if the Session token is Expired */
@@ -144,6 +146,9 @@ const newClient = async (
     if (response.success) {
         return {
             ID: 1,
+            port: 443,
+            subId: subId,
+            uuid: uuid,
             email: email,
             expire: isTrial ? FutureTimeStamp(1) : FutureTimeStamp(30),
             export: `vless://${ uuid }@${ domain() }:443?type=tcp&security=tls&fp=&alpn=http%2F1.1%2Ch2&sni=zoom.us#Dzoom-${ email }`
@@ -223,12 +228,12 @@ const newInbound = async (
     return false
 }
 
-export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vmess', sni: string, stream_method: 'ws' | 'tls') => {
+export const NewSubscription = async (user: User, vps_id: number, method: 'vless' | 'vmess', sni: string, stream_method: 'ws' | 'tls', isPaid: boolean) => {
     /* Check if the Session token is Expired */
     await RefreshSession(vps_id)
 
     const [ trialStatus, { ports, uuids, emails, subids }] = await Promise.all([
-        isTrialExpired(user),
+        isTrialExpired(user, isPaid),
         FetchInbounds(vps_id)
     ])
 
@@ -236,7 +241,7 @@ export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vm
         const { port, uuid, email, subId } = GenerateInboundFillData(ports, emails, uuids, subids)
         
         if (vps_id === 1 && method === 'vless') {
-            return await newClient(true, uuid, `${ user.username }_${ email }`, subId, vps_id)
+            return await newClient(!isPaid, uuid, `${ user.username }_${ email }`, subId, vps_id)
         }
 
         return await newInbound({
@@ -245,7 +250,7 @@ export const NewTrial = async (user: User, vps_id: number, method: 'vless' | 'vm
             method: method,
             sni: sni,
             stream_method: stream_method
-        }, true, port, uuid, email, subId)
+        }, !isPaid, port, uuid, email, subId)
     }
 
     return false
@@ -284,4 +289,109 @@ export const InboundStatus = async (user: User) => {
     }
     
     return false
+}
+
+export const UpgradeSubscription = async (user: User) => {
+    const packData = await GetPackageDetails(user)
+    if (!packData || packData.available_packages === 0) { return false }
+
+    const config = await FetchTicket(user)
+    /* if the config is not present we cannot upgrade the acccount */
+    if (!config) {
+        return false
+    }
+    
+    const { uuid, email, subId, pacK_id, port, inboundID, vps_id } = config as {
+        subId?: string,
+        uuid?: string,
+        email?: string,
+        port: number,
+        pacK_id: string,
+        inboundID: number,
+        vps_id: number
+    }
+
+    const { api, domain } = SERVER_CONFIG[vps_id]
+
+    if (uuid && email && subId) {
+        /* Handle Client Updates */
+        const settings = {
+            "clients": [
+                {
+                    "id": uuid,
+                    "flow": "",
+                    "email": email,
+                    "limitIp": 0,
+                    "totalGB": 0,
+                    "expiryTime": FutureTimeStamp(30),
+                    "enable": true,
+                    "tgId": "",
+                    "subId": subId
+                }
+            ]
+        }
+        await got.post(`${ api }/panel/api/inbounds/updateClient/${ uuid }`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Cookie': `session=${ SessionToken.session[vps_id] }`
+            },
+            json: {
+                'id': inboundID,
+                'settings': JSON.stringify(settings)
+            }
+        })
+        return true
+    }
+
+    /* Handle Inbound Updates */
+    const { method, sni, stream_method } = PACK_CONFIG[pacK_id as pack_types]
+
+    const settings = {
+        "clients": [
+            {
+                "id": uuid,
+                "email": email,
+                "limitIp": 0,
+                "totalGB": 0,
+                "expiryTime": 0,
+                "enable": true,
+                "tgId": "",
+                "subId": subId
+            }
+        ]
+    }
+    
+    const sniffing = {
+        "enabled": true,
+        "destOverride": [
+            "http",
+            "tls",
+            "quic",
+            "fakedns"
+        ]
+    }
+
+    await got.post(`${ api }/panel/api/inbounds/update/${ inboundID }`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cookie': `session=${ SessionToken.session[vps_id] }`
+        },
+        json: {
+            'enable': true,
+            'remark': user.username,
+            'listen': '',
+            'port': port,
+            'protocol': method,
+            'total': 0,
+            'expiryTime': FutureTimeStamp(30),
+            'settings': JSON.stringify(settings),
+            'streamSettings': JSON.stringify(GetStreamSettings(stream_method, domain, sni)),
+            'sniffing': JSON.stringify(sniffing)
+        }
+    })
+
+    await SetAvailablePackages(user, 0)
+    return true
 }
