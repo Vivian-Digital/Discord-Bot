@@ -290,3 +290,108 @@ export const InboundStatus = async (user: User) => {
     
     return false
 }
+
+export const UpgradeSubscription = async (user: User) => {
+    const packData = await GetPackageDetails(user)
+    if (!packData || packData.available_packages === 0) { return false }
+
+    const config = await FetchTicket(user)
+    /* if the config is not present we cannot upgrade the acccount */
+    if (!config) {
+        return false
+    }
+    
+    const { uuid, email, subId, pacK_id, port, inboundID, vps_id } = config as {
+        subId?: string,
+        uuid?: string,
+        email?: string,
+        port: number,
+        pacK_id: string,
+        inboundID: number,
+        vps_id: number
+    }
+
+    const { api, domain } = SERVER_CONFIG[vps_id]
+
+    if (uuid && email && subId) {
+        /* Handle Client Updates */
+        const settings = {
+            "clients": [
+                {
+                    "id": uuid,
+                    "flow": "",
+                    "email": email,
+                    "limitIp": 0,
+                    "totalGB": 0,
+                    "expiryTime": FutureTimeStamp(30),
+                    "enable": true,
+                    "tgId": "",
+                    "subId": subId
+                }
+            ]
+        }
+        await got.post(`${ api }/panel/api/inbounds/updateClient/${ uuid }`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Cookie': `session=${ SessionToken.session[vps_id] }`
+            },
+            json: {
+                'id': inboundID,
+                'settings': JSON.stringify(settings)
+            }
+        })
+        return true
+    }
+
+    /* Handle Inbound Updates */
+    const { method, sni, stream_method } = PACK_CONFIG[pacK_id as pack_types]
+
+    const settings = {
+        "clients": [
+            {
+                "id": uuid,
+                "email": email,
+                "limitIp": 0,
+                "totalGB": 0,
+                "expiryTime": 0,
+                "enable": true,
+                "tgId": "",
+                "subId": subId
+            }
+        ]
+    }
+    
+    const sniffing = {
+        "enabled": true,
+        "destOverride": [
+            "http",
+            "tls",
+            "quic",
+            "fakedns"
+        ]
+    }
+
+    await got.post(`${ api }/panel/api/inbounds/update/${ inboundID }`, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cookie': `session=${ SessionToken.session[vps_id] }`
+        },
+        json: {
+            'enable': true,
+            'remark': user.username,
+            'listen': '',
+            'port': port,
+            'protocol': method,
+            'total': 0,
+            'expiryTime': FutureTimeStamp(30),
+            'settings': JSON.stringify(settings),
+            'streamSettings': JSON.stringify(GetStreamSettings(stream_method, domain, sni)),
+            'sniffing': JSON.stringify(sniffing)
+        }
+    })
+
+    await SetAvailablePackages(user, 0)
+    return true
+}
