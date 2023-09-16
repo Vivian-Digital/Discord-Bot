@@ -50,7 +50,10 @@ export const SelectMenuCollector = async (interaction: StringSelectMenuInteracti
                     }),
                     /* Instrunction Message (Private DM) */
                     interaction.user.send({
-                        content: 'https://www.youtube.com/playlist?list=PL3soM7RZmff-EshZkFxz488SXuMhbT-OU'
+                        embeds: [
+                            InteractionEmbedBuilder('Green', 'Software Download : ```https://github.com/Danushka-Madushan/Netch-LK/releases/download/2.0.1/Netch.7z```')
+                        ],
+                        content: "https://www.youtube.com/playlist?list=PL3soM7RZmff-EshZkFxz488SXuMhbT-OU"
                     })
                 ])
                 return
