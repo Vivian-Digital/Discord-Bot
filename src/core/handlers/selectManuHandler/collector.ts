@@ -50,7 +50,7 @@ export const SelectMenuCollector = async (interaction: StringSelectMenuInteracti
                     }),
                     /* Instrunction Message (Private DM) */
                     interaction.user.send({
-                        content: 'https://www.youtube.com/watch?v=JfHVv3nuWHI'
+                        content: 'https://www.youtube.com/playlist?list=PL3soM7RZmff-EshZkFxz488SXuMhbT-OU'
                     })
                 ])
                 return
