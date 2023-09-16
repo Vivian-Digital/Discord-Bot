@@ -18,7 +18,7 @@ const InboundInteractionArray: Array<TInboundInfoID> = [ 'ticket_status', 'upgra
 
 const InteractionLabels: Record<TCustomID, typeof TicketButtons[number]['label']> = {
     'ticket_automatic': 'Automatic',
-    'ticket_manual': 'Manual'
+    'ticket_manual': 'Manual (Support)'
 }
 
 const NewDynamicChannel = async (server: Guild, Instance: Client<true>, user: User) => {

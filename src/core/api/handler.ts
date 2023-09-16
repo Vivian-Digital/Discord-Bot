@@ -187,7 +187,9 @@ const newInbound = async (
                 "tgId": "",
                 "subId": subId
             }
-        ]
+        ],
+        "decryption": "none",
+        "fallbacks": []
     }
     
     const sniffing = {
@@ -359,7 +361,9 @@ export const UpgradeSubscription = async (user: User) => {
                 "tgId": "",
                 "subId": subId
             }
-        ]
+        ],
+        "decryption": "none",
+        "fallbacks": []
     }
     
     const sniffing = {

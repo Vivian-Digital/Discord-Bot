@@ -55,11 +55,11 @@ export const CONFIG = {
 /* Ticket Interaction Configurations */
 export const TICKET = {
     /* Ticket Staff Role ID */
-    STAFF_ROLE: "1061544410820640788",
+    STAFF_ROLE: "1034867521171496990",
     /* Ticket Channel ID */
-    CHANNEL_ID: "1141592276284477450",
+    CHANNEL_ID: "1107706823605227590",
     /* Ticket Category */
-    CATEGORY_ID: "1141671074589855844"
+    CATEGORY_ID: "1107706777530798160"
 } as const
 
 export const EMBED_DATA = {
@@ -72,4 +72,4 @@ export const EMBED_DATA = {
     }
 } as const
 
-export const BANK_STRING = '```P.P.K Samantha\nPeoples Bank - Hungama\n1234 1234 1234 1234\nLKR 3500/=```'
+export const BANK_STRING = '```Chalana Gimhana\nCommercial Bank - Tangalle\n8016030363\nLKR 1000/=\n\n0741095176 EZ Cash```'

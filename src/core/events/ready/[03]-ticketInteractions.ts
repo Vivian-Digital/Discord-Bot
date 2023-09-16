@@ -10,7 +10,7 @@ export const TicketButtons = [
     },
     {
         id: 'ticket_manual',
-        label: 'Manual',
+        label: 'Manual (Support)',
         style: ButtonStyle.Success
     }
 ] as const
@@ -37,7 +37,7 @@ export default async (Instance: Client<true>) => {
     /* Embed Builder */
     const embed = new EmbedBuilder()
     .setTitle('OPEN A TICKET')
-    .setDescription('Use Automatic option for `SELF-SERVICE`, or Use Manual option for contact a `MANAGER`')
+    .setDescription('Use Automatic option for `SELF-SERVICE`, or Use Manual option for contact a `MANAGER (ONLY IF NECESSARY) `')
     .setTimestamp()
     .setThumbnail(EMBED_DATA.THUMBNAILS.NEON_BOOKMARK)
     .setFooter({
