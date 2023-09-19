@@ -117,8 +117,8 @@ export const PACK_CONFIG: Record<pack_types, {
     },
     airtel_freedom: {
         sni: 'docs.google.com',
-        method: 'vmess',
+        method: 'vless',
         vps_id: 1,
-        stream_method: 'ws'
+        stream_method: 'tls'
     }
 }
