@@ -33,12 +33,12 @@ const service_packs = [
         value: 'dialog_zoom',
         icon: pack_icon
     },
-    {
+    /* {
         labeL: 'Mobitel',
         description: 'Massaging Plan (WhatsApp Unlimited)',
         value: 'mobitel_messaging_whatsapp',
         icon: pack_icon
-    },
+    }, */
     {
         labeL: 'Hutch',
         description: 'Ultimate Gamer Pro (Daily 10 GB)',
