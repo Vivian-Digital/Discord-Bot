@@ -9,7 +9,7 @@ type TArgs = CommandInteraction | Message
 type ModuleType = typeof import('../events/interactionCreate/handleCommands.js')
 
 /* Event Handler */
-export default (Instance: Client) => {
+export default (Instance: Client<true>) => {
     /* Get All Event Folders */
     const eventFolders = fileSystem(path.join(__dirname, '..', 'events'), true)
 
