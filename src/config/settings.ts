@@ -103,12 +103,12 @@ export const PACK_CONFIG: Record<pack_types, {
         vps_id: 4,
         stream_method: 'tls'
     },
-    mobitel_messaging_whatsapp: {
+    /* mobitel_messaging_whatsapp: {
         sni: 'mix-cn.linkedin.com',
         method: 'vmess',
         vps_id: 1,
         stream_method: 'ws'
-    },
+    }, */
     hutch_ultimate_gamer: {
         sni: 'store.steampowered.com',
         method: 'vless',

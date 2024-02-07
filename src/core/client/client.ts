@@ -4,7 +4,7 @@ import { ENV } from '../../config/config.js';
 import { AppEvents } from '../services/emitter.js';
 
 /* Bot Instance */
-export const ClientInstance = new Client({
+export const ClientInstance = new Client<true>({
     intents: [
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMembers,

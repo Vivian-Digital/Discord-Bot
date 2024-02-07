@@ -48,7 +48,7 @@ export const CONFIG = {
     ],
     /* Authorized Accounts */
     authorizedAccounts: [
-        "784060192836681749"
+        "632484307587432448"
     ]
 }
 
@@ -57,9 +57,9 @@ export const TICKET = {
     /* Ticket Staff Role ID */
     STAFF_ROLE: "1034867521171496990",
     /* Ticket Channel ID */
-    CHANNEL_ID: "1107706823605227590",
+    CHANNEL_ID: "1061538251342626880",
     /* Ticket Category */
-    CATEGORY_ID: "1107706777530798160"
+    CATEGORY_ID: "1141671074589855844"
 } as const
 
 export const EMBED_DATA = {
