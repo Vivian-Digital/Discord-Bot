@@ -1,4 +1,4 @@
-import { ButtonInteraction, ChannelType, Client, EmbedBuilder, Guild, TextChannel, User, spoiler } from 'discord.js';
+import { ButtonInteraction, ChannelType, Client, EmbedBuilder, Guild, TextChannel, User } from 'discord.js';
 import { TicketButtons } from '../../events/ready/[03]-ticketInteractions.js';
 import { BANK_STRING, EMBED_DATA, ENV, TICKET } from '../../../config/config.js';
 import { NewTicket, isNewTicketUser, isTrialExpired } from '../../controllers/tickets.js';
@@ -143,7 +143,7 @@ export default async (Instance: Client<true>, interaction: ButtonInteraction) =>
             embeds: [
                 InteractionEmbedBuilder(
                     'Red',
-                    `\`ALL TICKETS\` Category Does not Exists \`ID\`:\`${ spoiler(TICKET.CATEGORY_ID) }\``
+                    `\`ALL TICKETS\` Category Does not Exists \`ID\`:\`${ TICKET.CATEGORY_ID }\``
                 )
             ],
             ephemeral: true
