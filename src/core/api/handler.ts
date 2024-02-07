@@ -138,7 +138,7 @@ const newClient = async (
             'Cookie': `session=${ SessionToken.session[vps_id] }`
         },
         json: {
-            'id': 1,
+            'id': 2,
             'settings': JSON.stringify(settings)
         }
     }).json<{ success: boolean, msg: string, obj: null }>()
